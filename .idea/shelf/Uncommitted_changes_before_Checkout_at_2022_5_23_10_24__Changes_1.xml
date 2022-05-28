@@ -1,0 +1,14 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_2022_5_23_10_24_[Changes]1" date="1653272707366" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022_5_23_10_24_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2022/5/23 10:24 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/it/controller/SetmealController.class" />
+    <option name="AFTER_PATH" value="target/classes/com/it/controller/SetmealController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022_5_23_10_24_[Changes]1/SetmealController.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/it/ReggieApplication.class" />
+    <option name="AFTER_PATH" value="target/classes/com/it/ReggieApplication.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022_5_23_10_24_[Changes]1/ReggieApplication.class" />
+  </binary>
+</changelist>
