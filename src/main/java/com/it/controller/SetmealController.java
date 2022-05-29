@@ -2,6 +2,7 @@ package com.it.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.it.common.R;
 import com.it.dto.DishDto;
@@ -13,10 +14,14 @@ import com.it.entity.Setmeal;
 import com.it.service.CategoryService;
 import com.it.service.SetmealDishService;
 import com.it.service.SetmealService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +31,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/setmeal")
 public class SetmealController {
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
     //套餐管理
     @Autowired
     private SetmealService setmealService;
@@ -37,50 +46,45 @@ public class SetmealController {
 
     //显示套餐管理数据//套餐分页查询
     @GetMapping("/page")
-    private R<Page> sava(int page, int pageSize, String name) {
-        Page<Setmeal> setmealPage = new Page<>(page, pageSize);
+    public R<Page> querySetmealDish(int page, int pageSize, String name) {
+
+        Page<Setmeal> pageInfo = new Page<>(page, pageSize);
+
         Page<SetmealDto> setmealDtoPage = new Page<>();
-        //分页构造器对象
-        LambdaQueryWrapper<Setmeal> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        //模糊查询
-        lambdaQueryWrapper.like(name != null, Setmeal::getName, name);
-        //添加排序条件，根据更新时间降序排列
-        lambdaQueryWrapper.orderByDesc(Setmeal::getUpdateTime);
 
-        try {
-            Page<Setmeal> page1 = setmealService.page(setmealPage);
-            System.out.println("page1 = " + page1);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        } finally {
+        QueryWrapper<Setmeal> wrapper = new QueryWrapper<>();
+        wrapper.like(StringUtils.isNotEmpty(name), "name", name);
+        setmealService.page(pageInfo, wrapper);
+
+        List<Setmeal> records = pageInfo.getRecords();
+
+        BeanUtils.copyProperties(pageInfo, setmealDtoPage, "records");
+
+        List<SetmealDto> setmealDtoList = records.stream().map(item -> {
+
+            SetmealDto setmealDto = new SetmealDto();
+
+            BeanUtils.copyProperties(item, setmealDto);
+
+            Long categoryId = item.getCategoryId();
+
+            Category category = categoryService.getById(categoryId);
+
+            if (category != null) {
+
+                setmealDto.setCategoryName(category.getName());
+            }
+
+            return setmealDto;
+
+        }).collect(Collectors.toList());
 
 
-            BeanUtils.copyProperties(setmealPage, setmealDtoPage, "records");
-            List<Setmeal> records = setmealPage.getRecords();
-            List<SetmealDto> collect = records.stream().map((item) -> {
-                SetmealDto setmealDto = new SetmealDto();
-                //对象拷贝
-                BeanUtils.copyProperties(item, setmealDto);
-                //分类id
-                Long categoryId = item.getCategoryId();
-                //根据分类id查询
-                Category byId = categoryService.getById(categoryId);
-                if (byId != null) {
-                    //分类名称
-                    String name1 = byId.getName();
-                    setmealDto.setCategoryName(name1);
+        setmealDtoPage.setRecords(setmealDtoList);
 
-                }
-                return setmealDto;
-
-            }).collect(Collectors.toList());
-            //对象拷贝
-
-            setmealDtoPage.setRecords(collect);
-
-            return R.success(setmealDtoPage);
-        }
+        return R.success(setmealDtoPage);
     }
+
     //套餐管理/状态修改
 
     @PostMapping("/status/{status}")
@@ -150,4 +154,5 @@ public class SetmealController {
         List<Setmeal> list = setmealService.list(lambdaQueryWrapper);
         return R.success(list);
     }
+
 }

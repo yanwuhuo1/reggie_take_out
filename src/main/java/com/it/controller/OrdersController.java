@@ -56,9 +56,6 @@ public class OrdersController {
         Page<Orders> objectPage = new Page<>(page, pageSize);
         Page<OrdersDto> ordersDtoPage = new Page<>();
 
-       /* LambdaQueryWrapper<Orders> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(number != null, Orders::getId, number);*/
-
         QueryWrapper<Orders> wrapper = new QueryWrapper<>();
 
         wrapper.like("number", StringUtils.isNotBlank(number)?number:"");
