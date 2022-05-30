@@ -2,6 +2,8 @@
 
 #### 介绍
 外卖平台项目，分后台管理，移动端客户应用，采用了前后台分离，ajax交互数据
+![image-20210726005437857](https://user-images.githubusercontent.com/46529350/170909885-656834e7-a5a2-41af-bc4d-0a1e80c68637.png)
+
 
 Spring-boot+Mybatis-plus+Mysql+Redis+H5+Vue+ElementUI等技术
 
