@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/setmeal")
 public class SetmealController {
 
-    @Autowired
-    private ApplicationContext applicationContext;
 
     //套餐管理
     @Autowired
@@ -52,9 +50,11 @@ public class SetmealController {
 
         Page<SetmealDto> setmealDtoPage = new Page<>();
 
-        QueryWrapper<Setmeal> wrapper = new QueryWrapper<>();
-        wrapper.like(StringUtils.isNotEmpty(name), "name", name);
-        setmealService.page(pageInfo, wrapper);
+//        QueryWrapper<Setmeal> wrapper = new QueryWrapper<>();
+//        wrapper.like(StringUtils.isNotEmpty(name), "name", name);
+        LambdaQueryWrapper<Setmeal> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(name!=null,Setmeal::getName,name);
+        setmealService.page(pageInfo, lambdaQueryWrapper);
 
         List<Setmeal> records = pageInfo.getRecords();
 
