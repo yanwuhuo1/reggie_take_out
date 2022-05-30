@@ -49,7 +49,7 @@ public class UserController {
             log.info("code={}", param);
 
             //调用腾讯云提供的api发送短信
-//            SendSms.senMessage(phone,param);
+            SendSms.senMessage(phone,param);
 
             //将生成的验证码缓存到Redis中，设置有效时间为5分钟
             redisTemplate.opsForValue().set(phone, param, 5, TimeUnit.MINUTES);

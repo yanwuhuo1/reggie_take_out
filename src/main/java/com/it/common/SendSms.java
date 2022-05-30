@@ -19,6 +19,8 @@ import com.tencentcloudapi.sms.v20210111.models.SendStatus;
 
 /**
  * Tencent Cloud Sms Sendsms
+ *
+ * 腾讯云短信接口
  */
 public class SendSms {
 

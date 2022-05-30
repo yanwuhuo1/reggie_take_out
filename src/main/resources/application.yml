@@ -9,7 +9,11 @@ spring:
       password: 123456
       initial-size: 50
       max-active: 50
-
+    redis:
+      host:
+      port: 6379
+      password:
+      database: 0
   devtools:
     restart:
       enabled: true
@@ -32,11 +36,7 @@ reggie:
   path: E:\img1\
 
 
-  #  redis:
-  #    host: 192.168.31.106
-  #    port: 6379
-  #    password:
-  #    database: 0
+
 #  #  主从复制，读写分离
 #  shardingsphere:
 #    dataSource:
